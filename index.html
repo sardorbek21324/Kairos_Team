@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Доступ по коду</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    body {
+      background: #000;
+    }
+
+    .bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://images.pexels.com/photos/691668/pexels-photo-691668.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') center center / cover no-repeat;
+      filter: blur(8px) brightness(0.5);
+      z-index: 0;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(2px);
+      z-index: 1;
+    }
+
+    .login-screen, .main-screen {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      transition: opacity 0.8s ease;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    input[type="password"] {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      margin-bottom: 20px;
+      outline: none;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      text-align: center;
+    }
+
+    .enter-button {
+      padding: 10px 25px;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .enter-button:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 600;
+      margin-bottom: 40px;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 1.2s ease;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1.2s ease 0.3s;
+    }
+
+    .glass-button {
+      padding: 14px 28px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: white;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .glass-button:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .show {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 28px; }
+
+      .glass-button {
+        width: 100%;
+        text-align: center;
+      }
+
+      .buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="overlay"></div>
+
+  <!-- ЭКРАН ВВОДА КОДА -->
+  <div class="login-screen" id="loginScreen">
+    <h2>Введите код доступа</h2>
+    <input type="password" id="accessCode" placeholder="****">
+    <button class="enter-button" onclick="checkCode()">Войти</button>
+  </div>
+
+  <!-- ГЛАВНЫЙ ИНТЕРФЕЙС -->
+  <div class="main-screen hidden" id="mainScreen">
+    <h1 id="heading">Куда будем загружать файлы?</h1>
+    <div class="buttons" id="btnGroup">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScn7zIrf9KqiPhovpZQvMwPFZNDzCy8lKE9HxUzO_B8pBBahQ/viewform?usp=header" class="glass-button">LUQMA KEBAB</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfoE9J9SVmd2kGOJnrW4R1d0Tg595p1TtdyKQ3bhBvIkLLKGg/viewform?usp=header" class="glass-button">Maya Halal Market</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7CypWo86vRh2vpbJKwQVBXZ9mxSKm0ipbmrZd4FVl7zETeg/viewform?usp=header" class="glass-button">O'zbegim</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyHaYUKcSz3YzPSJHnTMQLHYc39Z9ne8GpH8BqkMSqo95IQw/viewform?usp=header" class="glass-button">Sakura Sushi</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSddX-e-UKrd9KNVr-F_J7jHRerzb58iV5ziANRRmrgc98Z0jw/viewform?usp=header" class="glass-button">Test Video</a>
+    </div>
+  </div>
+
+  <!-- ЗВУКИ -->
+  <audio id="loadSound" src="https://zvukipro.com/uploads/files/2024-01/1704081991_breeze.mp3" preload="auto"></audio>
+  <audio id="clickSound" src="https://zvukipro.com/uploads/files/2019-09/1568278037_ed2e0bdcba691bf.mp3" preload="auto"></audio>
+
+  <script>
+    function checkCode() {
+      const input = document.getElementById('accessCode').value;
+      const correctCode = "0158";
+
+      if (input === correctCode) {
+        document.getElementById('loginScreen').classList.add('hidden');
+        const main = document.getElementById('mainScreen');
+        main.classList.remove('hidden');
+
+        setTimeout(() => {
+          document.getElementById('heading').classList.add('show');
+        }, 300);
+        setTimeout(() => {
+          document.getElementById('btnGroup').classList.add('show');
+        }, 800);
+
+        // звук включения
+        const loadSound = document.getElementById('loadSound');
+        loadSound.volume = 0.6;
+        loadSound.play().catch(() => {});
+      } else {
+        alert("Неверный код");
+      }
+    }
+
+    const clickSound = document.getElementById('clickSound');
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('glass-button')) {
+        clickSound.currentTime = 0;
+        clickSound.play().catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>
