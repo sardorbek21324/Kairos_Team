@@ -1,208 +1,622 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Доступ по коду</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kairos Team �" Premium Visual Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05030b;
+            --fg: #f5f6ff;
+            --muted: #b2b5c8;
+            --accent: #5c6bff;
+            --accent-2: #8e3dff;
+            --card: rgba(10, 10, 30, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --gradient: linear-gradient(135deg, rgba(92q, 107, 255, 0.18), rgba(142, 61, 255, 0.22));
+        }
 
-    html, body {
-      height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-      overflow: hidden;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-      background: #000;
-    }
+        body {
+            font-family: "Space Grotesk", sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    .bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://images.pexels.com/photos/691668/pexels-photo-691668.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') center center / cover no-repeat;
-      filter: blur(8px) brightness(0.5);
-      z-index: 0;
-    }
+        img, video {
+            max-width: 100%;
+            display: block;
+        }
 
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      backdrop-filter: blur(2px);
-      z-index: 1;
-    }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-    .login-screen, .main-screen {
-      position: relative;
-      z-index: 2;
-      height: 100%;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: white;
-      transition: opacity 0.8s ease;
-    }
+        header, section, footer {
+            padding: clamp(3rem, 5vw, 6rem) clamp(1.5rem, 8vw, 8rem);
+        }
 
-    .hidden {
-      display: none !important;
-    }
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: column;
+            text-align: center;
+            overflow: hidden;
+        }
 
-    input[type="password"] {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      font-size: 18px;
-      margin-bottom: 20px;
-      outline: none;
-      backdrop-filter: blur(10px);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      text-align: center;
-    }
+        .hero video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            filter: saturate(0.9);
+        }
 
-    .enter-button {
-      padding: 10px 25px;
-      border: none;
-      background: rgba(255,255,255,0.1);
-      color: white;
-      font-size: 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(5, 3, 11, 0.4), rgba(5, 3, 11, 0.95));
+        }
 
-    .enter-button:hover {
-      background: rgba(255,255,255,0.2);
-    }
+        .hero-content {
+            position: relative;
+            max-width: 820px;
+            z-index: 1;
+            padding: 2rem 0 4rem;
+            animation: fadeUp 1.2s ease forwards;
+        }
 
-    h1 {
-      font-size: 42px;
-      font-weight: 600;
-      margin-bottom: 40px;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: all 1.2s ease;
-    }
+        h1 {
+            font-size: clamp(3rem, 9vw, 7rem);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 1.2s ease 0.3s;
-    }
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 2.4rem);
+            margin-bottom: 1rem;
+        }
 
-    .glass-button {
-      padding: 14px 28px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      color: white;
-      text-decoration: none;
-      backdrop-filter: blur(8px);
-      font-size: 16px;
-      transition: all 0.3s ease;
-    }
+        .subtitle {
+            font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+            color: var(--muted);
+            margin: 1rem auto;
+            max-width: 680px;
+        }
 
-    .glass-button:hover {
-      background: rgba(255, 255, 255, 0.18);
-      transform: translateY(-2px);
-    }
+        .hero-buttons {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
 
-    .show {
-      opacity: 1 !important;
-      transform: translateY(0) !important;
-    }
+        .btn {
+            padding: 0.95rem 2.5rem;
+            border-radius: 100vmax;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border: 1px solid transparent;
+            transition: transform 0.3s ease, background 0.3s ease, border 0.3s ease;
+        }
 
-    @media (max-width: 600px) {
-      h1 { font-size: 28px; }
+        .btn-primary {
+            background: linear-gradient(120deg, #5c6bff, #8e3dff);
+            box-shadow: 0 0 40px rgba(92, 107, 255, 0.4);
+        }
 
-      .glass-button {
-        width: 100%;
-        text-align: center;
-      }
+        .btn-secondary {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
 
-      .buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-  </style>
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .value-grid {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 1.25rem;
+            padding: 1.8rem;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            animation: fadeIn 1s ease both;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(92, 107, 255, 0.18);
+            display: grid;
+            place-items: center;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            font-size: 1.3rem;
+        }
+
+        .section-heading {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .label {
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-size: 0.76rem;
+            color: var(--muted);
+        }
+
+        .services-grid {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .case-studies {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .case-card {
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            filter: grayscale(0.2);
+        }
+
+        .case-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(5, 3, 11, 0.65);
+            z-index: 0;
+        }
+
+        .case-card .card-content {
+            z-index: 1;
+        }
+
+        .approach-grid {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .bts {
+            border-radius: 1.5rem;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .bts-item {
+            position: relative;
+            min-height: 220px;
+        }
+
+        .bts-item img,
+        .bts-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .faq {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1rem;
+        }
+
+        details {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            background: rgba(10, 10, 25, 0.8);
+            transition: border 0.3s ease;
+        }
+
+        details[open] {
+            border-color: rgba(92, 107, 255, 0.6);
+        }
+
+        summary {
+            font-weight: 600;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .cta {
+            text-align: center;
+            padding: clamp(3rem, 7vw, 6rem);
+            background: radial-gradient(circle at top, rgba(92, 107, 255, 0.3), rgba(5,3,11,0.95)), #05030b;
+            border-top: 1px solid var(--border);
+        }
+
+        .cta h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            letter-spacing: 0.05em;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 3rem;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+
+        footer a {
+            color: var(--fg);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeIn 1s ease both;
+        }
+
+        .section + .section {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 2rem 1.5rem 4rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="bg"></div>
-  <div class="overlay"></div>
+    <header class="hero">
+        <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1500&q=80">
+            <source src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <p class="label">Warsaw • Creative Marketing Studio</p>
+            <h1>Kairos Team</h1>
+            <h2>Premium Visuals & Smart Ads for Restaurants and Retail Brands</h2>
+            <p class="subtitle">Video. Photo. Advertising. Design. Website. One team for all your online needs.</p>
+            <div class="hero-buttons">
+                <a class="btn btn-primary" href="#cta">Get Free Audit</a>
+                <a class="btn btn-secondary" href="#case-studies">See Portfolio</a>
+            </div>
+        </div>
+    </header>
 
-  <!-- ЭКРАН ВВОДА КОДА -->
-  <div class="login-screen" id="loginScreen">
-    <h2>Введите код доступа</h2>
-    <input type="password" id="accessCode" placeholder="****">
-    <button class="enter-button" onclick="checkCode()">Войти</button>
-  </div>
+    <section class="section" id="why">
+        <div class="section-heading">
+            <span class="label">Why Kairos Team</span>
+            <h2>We combine proactive strategy with cinematic craft.</h2>
+        </div>
+        <div class="grid value-grid">
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">⚡</div>
+                    <h3>Proactive Agency</h3>
+                    <p>We find problems before you ask and bring ready solutions.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">🎬</div>
+                    <h3>All-in-One Team</h3>
+                    <p>Video, photo, design, ads, website �" handled under one roof.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">🍽️</div>
+                    <h3>Premium Visuals</h3>
+                    <p>Cinematic food & product content that elevates every menu.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">�"�</div>
+                    <h3>Smart Ads</h3>
+                    <p>Google & Instagram campaigns tuned for real reservations.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">🤝</div>
+                    <h3>Partners, Not Contractors</h3>
+                    <p>We grow together with every Warsaw client we onboard.</p>
+                </div>
+            </article>
+        </div>
+    </section>
 
-  <!-- ГЛАВНЫЙ ИНТЕРФЕЙС -->
-  <div class="main-screen hidden" id="mainScreen">
-    <h1 id="heading">Куда будем загружать файлы?</h1>
-    <div class="buttons" id="btnGroup">
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLScn7zIrf9KqiPhovpZQvMwPFZNDzCy8lKE9HxUzO_B8pBBahQ/viewform?usp=header" class="glass-button">LUQMA KEBAB</a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfoE9J9SVmd2kGOJnrW4R1d0Tg595p1TtdyKQ3bhBvIkLLKGg/viewform?usp=header" class="glass-button">Maya Halal Market</a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7CypWo86vRh2vpbJKwQVBXZ9mxSKm0ipbmrZd4FVl7zETeg/viewform?usp=header" class="glass-button">O'zbegim</a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdyHaYUKcSz3YzPSJHnTMQLHYc39Z9ne8GpH8BqkMSqo95IQw/viewform?usp=header" class="glass-button">Sakura Sushi</a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSddX-e-UKrd9KNVr-F_J7jHRerzb58iV5ziANRRmrgc98Z0jw/viewform?usp=header" class="glass-button">Test Video</a>
-    </div>
-  </div>
+    <section class="section" id="services">
+        <div class="section-heading">
+            <span class="label">What We Do</span>
+            <h2>Full-stack creative and growth for hospitality & retail.</h2>
+        </div>
+        <div class="grid services-grid">
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">🎥</div>
+                    <h3>Video & Photo Production</h3>
+                    <p>Studio-grade filming, lighting, editing, and post-production.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">�"�</div>
+                    <h3>Instagram/TikTok Content</h3>
+                    <p>Snappy, on-trend stories that keep Warsaw audiences hungry.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">🚀</div>
+                    <h3>Google & Instagram Ads</h3>
+                    <p>Conversion-focused campaigns monitored daily.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">�'�</div>
+                    <h3>Website Development</h3>
+                    <p>Shopify, WordPress, Tilda builds that sell your story.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">🎨</div>
+                    <h3>Branding & Design</h3>
+                    <p>Menus, posters, packaging, uniforms �" premium touchpoints.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">�"�</div>
+                    <h3>Analytics & Growth</h3>
+                    <p>Data dashboards and growth plans for each venue.</p>
+                </div>
+            </article>
+        </div>
+    </section>
 
-  <!-- ЗВУКИ -->
-  <audio id="loadSound" src="https://zvukipro.com/uploads/files/2024-01/1704081991_breeze.mp3" preload="auto"></audio>
-  <audio id="clickSound" src="https://zvukipro.com/uploads/files/2019-09/1568278037_ed2e0bdcba691bf.mp3" preload="auto"></audio>
+    <section class="section" id="case-studies">
+        <div class="section-heading">
+            <span class="label">Case Studies</span>
+            <h2>Selected Warsaw collaborations.</h2>
+        </div>
+        <div class="grid case-studies">
+            <article class="case-card">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80" alt="MyHalalMarket">
+                <div class="card-content">
+                    <h3>MyHalalMarket</h3>
+                    <p>Website, Google Ads, Instagram Ads, premium content. Client increased orders weekly.</p>
+                </div>
+            </article>
+            <article class="case-card">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80" alt="Szafran Restaurant">
+                <div class="card-content">
+                    <h3>Szafran Restaurant</h3>
+                    <p>6 monthly videos, improved ads, higher in-store traffic and returning clients.</p>
+                </div>
+            </article>
+            <article class="case-card">
+                <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=1200&q=80" alt="Turan Restaurant">
+                <div class="card-content">
+                    <h3>Turan Restaurant</h3>
+                    <p>4�"5 videos monthly, ad management, design refresh, +2 clients via referrals.</p>
+                </div>
+            </article>
+        </div>
+    </section>
 
-  <script>
-    function checkCode() {
-      const input = document.getElementById('accessCode').value;
-      const correctCode = "0158";
+    <section class="section" id="approach">
+        <div class="section-heading">
+            <span class="label">Our Approach</span>
+            <h2>Built for speed, transparency, and measurable impact.</h2>
+        </div>
+        <div class="grid approach-grid">
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">�"�</div>
+                    <h3>Transparency</h3>
+                    <p>Clear reporting and shared dashboards keep everyone aligned.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">⚙️</div>
+                    <h3>Speed</h3>
+                    <p>Agile sprints, weekly deliverables, instant feedback loops.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">🏆</div>
+                    <h3>Quality</h3>
+                    <p>High-end production values across video, photo, and design.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">🎯</div>
+                    <h3>Result Driven</h3>
+                    <p>Every asset is linked to bookings, traffic, or retention goals.</p>
+                </div>
+            </article>
+            <article class="card">
+                <div class="card-content">
+                    <div class="icon">🧩</div>
+                    <h3>Problem Solvers</h3>
+                    <p>We close small issues that silently drain revenue from restaurants.</p>
+                </div>
+            </article>
+        </div>
+    </section>
 
-      if (input === correctCode) {
-        document.getElementById('loginScreen').classList.add('hidden');
-        const main = document.getElementById('mainScreen');
-        main.classList.remove('hidden');
+    <section class="section" id="behind">
+        <div class="section-heading">
+            <span class="label">Behind the Scenes</span>
+            <h2>Filming. Editing. Designing. Always creating.</h2>
+        </div>
+        <div class="bts">
+            <div class="bts-item">
+                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=80" alt="Team filming">
+            </div>
+            <div class="bts-item">
+                <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1455894127589-22f75500213a?auto=format&fit=crop&w=1000&q=80">
+                    <source src="https://storage.googleapis.com/coverr-main/mp4/Footboys.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="bts-item">
+                <img src="https://images.unsplash.com/photo-1454165205744-3b78555e5572?auto=format&fit=crop&w=1000&q=80" alt="Editing suite">
+            </div>
+        </div>
+    </section>
 
-        setTimeout(() => {
-          document.getElementById('heading').classList.add('show');
-        }, 300);
-        setTimeout(() => {
-          document.getElementById('btnGroup').classList.add('show');
-        }, 800);
+    <section class="section" id="faq">
+        <div class="section-heading">
+            <span class="label">FAQ</span>
+            <h2>What clients ask before we start.</h2>
+        </div>
+        <div class="faq">
+            <details>
+                <summary>How long does video creation take?</summary>
+                <p>We deliver storyboard �' shoot �' edit cycles within 7�"14 days depending on concept complexity.</p>
+            </details>
+            <details>
+                <summary>Do you work with small businesses?</summary>
+                <p>Yes. We support independent restaurants, concept stores, and boutique retail brands across Warsaw.</p>
+            </details>
+            <details>
+                <summary>Can we hire you only for ads?</summary>
+                <p>Absolutely. We manage Google and Instagram ads even if we do not produce your content.</p>
+            </details>
+            <details>
+                <summary>Is there a monthly contract?</summary>
+                <p>Most clients choose flexible 3�"6 month retainers with optional project-based add-ons.</p>
+            </details>
+        </div>
+    </section>
 
-        // звук включения
-        const loadSound = document.getElementById('loadSound');
-        loadSound.volume = 0.6;
-        loadSound.play().catch(() => {});
-      } else {
-        alert("Неверный код");
-      }
-    }
+    <section class="cta" id="cta">
+        <p class="label">Ready for bold growth?</p>
+        <h2>Let’s grow your business together.</h2>
+        <p class="subtitle">Tell us about your restaurant, bar, or retail concept �" we’ll deliver a free creative + media audit.</p>
+        <div class="hero-buttons" style="margin-top: 2.5rem;">
+            <a class="btn btn-primary" href="mailto:hello@kairosteam.pl">Get Free Audit</a>
+        </div>
+    </section>
 
-    const clickSound = document.getElementById('clickSound');
-    document.addEventListener('click', function(e) {
-      if (e.target.classList.contains('glass-button')) {
-        clickSound.currentTime = 0;
-        clickSound.play().catch(() => {});
-      }
-    });
-  </script>
+    <footer>
+        <div>
+            <strong>Kairos Team</strong><br>
+            Premium creative studio for restaurants & retail in Warsaw.
+        </div>
+        <div>
+            <p>Email: <a href="mailto:hello@kairosteam.pl">hello@kairosteam.pl</a></p>
+            <p>Socials: <a href="#">Instagram</a> • <a href="#">LinkedIn</a></p>
+            <p>Location: Warsaw, Poland</p>
+        </div>
+    </footer>
 </body>
 </html>
+
